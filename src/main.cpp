@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <NeoPixelBus.h>
 
-extern "C" {
 #include"vmem.h"
 #include"vloader.h"
 #include"vinterp.h"
@@ -12,8 +11,6 @@ extern "C" {
 //void simuSetLed(int i,int val);
 void simuSetMotor(int i,int val);
 
-}
-
 #include "bc.h"
 
 #define BUTTON_PIN 15
@@ -23,12 +20,12 @@ NeoPixelBus<NeoGrbFeature, NeoWs2813Method> strip(PIXELS, PIXEL_PIN);
 
 #define ADJUST_BRIGHTNESS(v) ((v) / 4)
 
-extern "C" void simuSetLed(int i,int val) {
+void simuSetLed(int i,int val) {
   RgbColor c(ADJUST_BRIGHTNESS((val>>16)&255), ADJUST_BRIGHTNESS((val>>8)&255), ADJUST_BRIGHTNESS((val)&255));
   strip.SetPixelColor(i, c);
 }
 
-extern "C" int getButton() {
+int getButton() {
   return digitalRead(BUTTON_PIN);
 }
 

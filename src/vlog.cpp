@@ -50,7 +50,7 @@ void logGC()
 	consolestr("#GC : sp=");consoleint(-vmem_stack);
 	consolestr(" hp=");consoleint(vmem_heapindex);
 	consolestr(" used=");consoleint((vmem_heapindex-vmem_stack)*100/VMEM_LENGTH);
-	consolestr("%"ENDLINE);
+	consolestr("%" ENDLINE);
         consolestr(" b:");consolehx((int)vmem_heap);
         consolestr(" bc:");consolehx((int)bytecode);
         consolestr(" st:");consolehx(vmem_start);
@@ -516,15 +516,14 @@ int encode8(uchar* src,int len,uchar key,uchar alpha)
 	return key;
 }
 
-
-
-int sysCrypt(char* src,int indexsrc,int len,int lensrc,unsigned int key,int alpha)
+int sysCrypt(char* src, int indexsrc, int len, int lensrc, unsigned int key, int alpha)
 {
   if ((indexsrc<0)||(indexsrc+len>lensrc)||(len<=0)) return -1;
-  return encode8(src+indexsrc,len,key,alpha);
+  return encode8((uchar*)(src+indexsrc), len, key, alpha);
 }
-int sysUncrypt(char* src,int indexsrc,int len,int lensrc,unsigned int key,int alpha)
+
+int sysUncrypt(char* src, int indexsrc, int len, int lensrc, unsigned int key, int alpha)
 {
   if ((indexsrc<0)||(indexsrc+len>lensrc)||(len<=0)) return -1;
-  return decode8(src+indexsrc,len,key,alpha);
+  return decode8((uchar*)(src+indexsrc),len,key,alpha);
 }

@@ -124,10 +124,10 @@ void dumpheap()
 		if ((realsize<0)||(realsize>=VMEM_LENGTH))
 		{
 			consolestr("2.realsize out of range\n");
-			dump((char*)&vmem_heap[pos-32],128);
+			dump((unsigned char*)&vmem_heap[pos-32],128);
 			return;
 		}
-		dump((char*)&vmem_heap[pos],32);
+		dump((unsigned char*)&vmem_heap[pos],32);
 		pos+=realsize;
 	}
 
