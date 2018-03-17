@@ -9,9 +9,6 @@
 #ifndef _SIMUNET_
 #define _SIMUNET_
 
-#define UDPEVENT (WM_USER+1)
-#define TCPEVENT (WM_USER+2)
-
 int simunetinit();
 
 int tcpservercreate(int port);
@@ -27,4 +24,3 @@ int udpsend(int localport,char* dstip,int dstport,char* msg, int len);
 int udpevent(int eventId, int wParam, int lParam);
 
 #endif
-

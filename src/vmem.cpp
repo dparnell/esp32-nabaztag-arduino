@@ -14,7 +14,6 @@ int vmem_heap[VMEM_LENGTH];
 
 #define VMEM_DBG
 
-
 int vmem_heapindex;
 int *vmem_top;
 int vmem_stack;
@@ -27,7 +26,7 @@ void vmemInit(int start)
 	vmem_top=&vmem_heap[VMEM_LENGTH];
 	vmem_stack=0;
 	vmem_start=vmem_heapindex=start;
-        vmem_broken=0;
+  vmem_broken=0;
 }
 
 void vmemSetstart(int start)

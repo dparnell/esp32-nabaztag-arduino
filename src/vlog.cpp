@@ -78,8 +78,6 @@ int sysLoad(char *dst,int i,int ldst,char *filename,int j,int len)
 #endif
 }
 
-uchar buffer_temp[4096];
-
 // pour le firmware, le "fichier" ouvert est toujours l'eeprom
 int sysSave(char *dst,int i,int ldst,char *filename,int j,int len)
 {

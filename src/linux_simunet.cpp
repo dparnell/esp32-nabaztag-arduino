@@ -10,8 +10,11 @@
 
 #include "log.h"
 
-#define TCPMAX 128 // nombre max de sockets tcp pouvant être ouvertes en même temps
-#define UDPMAX 128 // nombre max de sockets udp pouvant être ouvertes en même temps
+#include <lwip/sockets.h>
+#include <lwip/netdb.h>
+
+#define TCPMAX 16 // nombre max de sockets tcp pouvant être ouvertes en même temps
+#define UDPMAX 16 // nombre max de sockets udp pouvant être ouvertes en même temps
 
 int tcp_sock[TCPMAX];	// =-1 -> disponible
 int tcp_enable[TCPMAX];
@@ -95,9 +98,6 @@ int tcpbysock(int s);
 
 int checkTcpEvents(void)
 {
-	// @TODO: implement this
-
-	#if 0
 	fd_set fdset_r, fdset_w, fdset_err;
 	int nfds = 0;
 	int maxval = 0; // doit pouvoir être dispo directement
@@ -151,7 +151,6 @@ int checkTcpEvents(void)
 						}
 				}
 		}
-#endif
 
 	return 0;
 }
@@ -161,8 +160,6 @@ int checkTcpEvents(void)
  */
 int tcpEventRead(int fd)
 {
-// @TODO: implement this
-#if 0
 	/* soit une donnée à lire, soit un accept, soit un close */
 	/* accept si on l'attend, close si on lit 0 data, read sinon */
 	int idx = tcpbysock(fd);
@@ -178,14 +175,14 @@ int tcpEventRead(int fd)
 			// accept
 			struct sockaddr_in cor;
 			int ns;
-			int sizecor;
-			int ni,ip,port;
+			socklen_t sizecor;
+			int ni, ip,port;
 			char buf[16];
 
 			tcp_listen[idx] = 0;
 
 			sizecor=sizeof(cor);
-			ns=accept(fd,(struct sockaddr*)&cor,&sizecor);
+			ns=accept(fd, (struct sockaddr*)&cor, &sizecor);
 			if (ns==-1) return 1;
 
 			ni=tcpgetfree();
@@ -227,7 +224,7 @@ int tcpEventRead(int fd)
 		my_printf(LOG_SIMUNET, "Sockets : Read event on %d\n",fd);
 		res=recv(fd,buf,2048,0);
 
-		helper_write_buffer(buf, res);
+		// helper_write_buffer(buf, res);
 
 		VPUSH(INTTOVAL(idx));
 		if (res>0)
@@ -247,7 +244,6 @@ int tcpEventRead(int fd)
 		VPULL();
 		return 1;
 	}
-#endif
   return 0;
 }
 
@@ -306,10 +302,8 @@ int tcpgetfree(void)
 
 	 dstip:
  */
-int tcpopen(char* dstip,int dstport)
+int tcpopen(char* dstip, int dstport)
 {
-	// @TODO: implement this
-	#if 0
 	int socktcp;
 	struct sockaddr_in ina;
 	int opt=1;
@@ -339,8 +333,6 @@ int tcpopen(char* dstip,int dstport)
 	tcp_writeEventToNotify[i] = 1;
 
 	return i;
-	#endif
-	return -1;
 }
 
 /**
@@ -348,15 +340,12 @@ int tcpopen(char* dstip,int dstport)
  */
 int tcpclose(int i)
 {
-	// @TODO: implement this
-	#if 0
 	if ((i>=0)&&(i<TCPMAX)&&(tcp_sock[i]!=-1))
 	{
 		my_printf(LOG_SIMUNET, "Sockets : Tcp close %d\n",tcp_sock[i]);
 		close(tcp_sock[i]);
 		tcp_sock[i]=-1;
 	}
-	#endif
 	return i;
 }
 
@@ -365,8 +354,6 @@ int tcpclose(int i)
  */
 void tcpenable(int i,int enable)
 {
-	// @TODO: implement this
-	#if 0
 	if ((i>=0)&&(i<TCPMAX)&&(tcp_sock[i]!=-1))
 	{
 		char buf[16];
@@ -376,7 +363,6 @@ void tcpenable(int i,int enable)
 			if (enable)	recv(tcp_sock[i],buf,0,0);
 		}
 	}
-	#endif
 }
 
 
@@ -385,8 +371,6 @@ void tcpenable(int i,int enable)
  */
 int tcpsend(int i,char* msg, int len)
 {
-	// @TODO: implement this
-	#if 0
 	if ((i>=0)&&(i<TCPMAX)&&(tcp_sock[i]!=-1))
 	{
 		int res=send(tcp_sock[i],msg,len,0);
@@ -398,7 +382,7 @@ int tcpsend(int i,char* msg, int len)
 		}
 		return res;
 	}
-	#endif
+
 	return -1;
 }
 
@@ -407,8 +391,6 @@ int tcpsend(int i,char* msg, int len)
  */
 int tcpservercreate(int port)
 {
-	// @TODO: implement this
-	#if 0
 	int opt=1;
 	struct sockaddr_in ina;
 	int socksrv;
@@ -440,7 +422,7 @@ int tcpservercreate(int port)
 	my_printf(LOG_SIMUNET, "Sockets : create Tcp server :%d (socket=%d) (%s)\n",port,socksrv, strerror(errno));
 	tcp_sock[i]=socksrv;
 	tcp_listen[i]=1;
-#endif
+
 	return 0;
 }
 
@@ -468,8 +450,6 @@ int udpbysock(int s)
 
 int udpcreate(int port)
 {
-	// @TODO: implement this
-	#if 0
 	int sockudp;
 	struct sockaddr_in ina;
 	int opt=1;
@@ -499,15 +479,10 @@ int udpcreate(int port)
 	udp_port[i]=port;
 	udp_sock[i]=sockudp;
 	return i;
-	#endif
-
-	return -1;
 }
 
 int udpclose(int port)
 {
-	// @TODO: implement this
-	#if 0
 	int i=udpbyport(port);
 	if (i>=0)
 	{
@@ -515,15 +490,10 @@ int udpclose(int port)
 		udp_port[i]=0;
 	}
 	return i;
-	#endif
-
-	return -1;
 }
 
 int udpsend(int localport,char* dstip,int dstport,char* msg, int len)
 {
-	// TODO: Implement this
-	#if 0
 	struct sockaddr_in ina;
 	int i;
 
@@ -542,15 +512,18 @@ int udpsend(int localport,char* dstip,int dstport,char* msg, int len)
 		if (!memcmp(&(ina.sin_addr),&ip_192_168_1_1, sizeof(ip_192_168_1_1))) {
 			my_printf(LOG_SIMUNET, "Sockets : (hack) converting 192.168.1.1 to real dns ip\n");
 //			res_init();
+// @TODO: do we need this???
+#if 0
 			if (_res.nscount <= 0) { my_printf(LOG_SIMUNET, "Fatal error: no DNS available. Should abort\n"); return 0; };
 			ina.sin_addr = _res.nsaddr_list[0].sin_addr;
+#endif
 		}
 
 		my_printf(LOG_SIMUNET, "Sockets : send %d bytes on chn %d\n",len,i);
 		sendto(udp_sock[i],msg,len,0,(struct sockaddr *)&ina,sizeof(ina));
 		return 0;
 	}
-	#endif
+
 	return -1;
 }
 
@@ -558,8 +531,6 @@ int udpsend(int localport,char* dstip,int dstport,char* msg, int len)
 
 int checkUdpEvents(void)
 {
-	// TODO: implement this
-	#if 0
 	fd_set fdset_r, fdset_w, fdset_err;
 	int nfds = 0;
 	int maxval = 0; // doit pouvoir être dispo directement
@@ -600,19 +571,16 @@ int checkUdpEvents(void)
 						}
 				}
 		}
-#endif
 	return 0;
 }
 
 int udpEventRead(int fd)
 {
-	// TODO: implement this
-	#if 0
 	char buf[4096];
 	struct sockaddr_in add;
-	int i=udpbysock(fd);
-	int l=sizeof(add);
-	int res=recvfrom(fd,buf,4096,0,(struct sockaddr *)&add,&l);
+	int i = udpbysock(fd);
+	socklen_t l = sizeof(add);
+	socklen_t res=recvfrom(fd, buf, 4096, 0, (struct sockaddr *)&add , &l);
 	if (res<0) return 1;
 
 	my_printf(LOG_SIMUNET, "Sockets : UDP Read %d bytes on :%d from %s:%d\n",res,udp_port[i],inet_ntoa(add.sin_addr),ntohs(add.sin_port));
@@ -623,8 +591,5 @@ int udpEventRead(int fd)
 	if (VSTACKGET(0)!=NIL) interpGo();
 	else { VPULL();VPULL();VPULL();}
 	VPULL();
-	return 1;
-	#endif
-
 	return 1;
 }

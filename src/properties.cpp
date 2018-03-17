@@ -17,11 +17,11 @@ struct Prop
 };
 typedef struct Prop* prop;
 
-char* emptystring="";
+const char* emptystring="";
 struct Prop *Properties;
 
 // retourne le contenu d'un fichier dans un buffer
-// il ne faudra pas oublier de désalloué le buffer, par un appel à fileReleaseBuffer
+// il ne faudra pas oublier de dï¿½sallouï¿½ le buffer, par un appel ï¿½ fileReleaseBuffer
 char* fileLoadL(const char *filename,int *length)
 {
 	FILE* file;
@@ -48,13 +48,13 @@ char* fileLoad(const char *filename)
 	return fileLoadL(filename,NULL);
 }
 
-// libère le buffer retourné par fileLoad
+// libï¿½re le buffer retournï¿½ par fileLoad
 void fileReleaseBuffer(char* buffer)
 {
 	if (buffer) free((void*)buffer);
 }
 
-// lecture d'une chaîne hexadécimale (s'arrête au premier caractère incorrect)
+// lecture d'une chaï¿½ne hexadï¿½cimale (s'arrï¿½te au premier caractï¿½re incorrect)
 int htoi(const char* src)
 {
 	int x,c;
@@ -70,7 +70,7 @@ int htoi(const char* src)
 }
 
 
-// alloue une chaîne
+// alloue une chaï¿½ne
 char* stringStore(const char *src,int len)
 {
 	char* s=(char*)malloc(len+1);
@@ -79,15 +79,15 @@ char* stringStore(const char *src,int len)
 	return s;
 }
 
-// désalloue une chaîne
+// dï¿½salloue une chaï¿½ne
 void stringRelease(char *src)
 {
 	if (src) free((void*)src);
 }
 
 
-// fonction d'identification du premier mot d'une chaîne
-// ignore les espaces initiaux, et s'arrête au premier espace ou caractère spécial rencontré
+// fonction d'identification du premier mot d'une chaï¿½ne
+// ignore les espaces initiaux, et s'arrï¿½te au premier espace ou caractï¿½re spï¿½cial rencontrï¿½
 void suppspace(char* begin,int len, char **wordbegin, int *wordlen)
 {
 	int i=0;
@@ -102,20 +102,20 @@ void suppspace(char* begin,int len, char **wordbegin, int *wordlen)
 }
 
 
-// allocation de mémoire pour la structure prop
+// allocation de mï¿½moire pour la structure prop
 prop propAlloc()
 {
 	prop pnt=(prop)malloc(sizeof(struct Prop));
 	return pnt;
 }
 
-// désallocation de mémoire pour la structure prop
+// dï¿½sallocation de mï¿½moire pour la structure prop
 void propFree(prop pnt)
 {
 	if (pnt) free((void*)pnt);
 }
-	
-// détruit une prop, avec tous ses champs
+
+// dï¿½truit une prop, avec tous ses champs
 void propRelease(prop pnt)
 {
 	if (pnt)
@@ -127,7 +127,7 @@ void propRelease(prop pnt)
 	}
 }
 
-// ajout d'un champ à une structure prop 'nxt'
+// ajout d'un champ ï¿½ une structure prop 'nxt'
 prop propAdd(const char *name,int namelen,const char *val,int vallen,prop nxt)
 {
 	char *sname,*sval;
@@ -145,7 +145,7 @@ prop propAdd(const char *name,int namelen,const char *val,int vallen,prop nxt)
 	return pnt;
 }
 
-// inverse la liste de propriétés
+// inverse la liste de propriï¿½tï¿½s
 prop propReverse(prop pnt)
 {
 	prop last=NULL;
@@ -196,13 +196,13 @@ prop propParse(char *src)
 	return propReverse(propParseInv(src));
 }
 
-// retourne le premier élément
+// retourne le premier ï¿½lï¿½ment
 prop propFirst(prop pnt)
 {
 	return pnt;
 }
 
-// retourne l'élément suivant
+// retourne l'ï¿½lï¿½ment suivant
 prop propNext(prop pnt)
 {
 	return pnt->nxt;
@@ -241,10 +241,10 @@ char* propGet(prop pnt,char *field)
 		if (!strcmp(pnt->name,field)) return pnt->val;
 		pnt=pnt->nxt;
 	}
-	return emptystring;
+	return (char*)emptystring;
 }
 
-// retourne la valeur entière d'un champ
+// retourne la valeur entiï¿½re d'un champ
 int propGetInt(prop pnt,char *field)
 {
 	char *p=propGet(pnt,field);
@@ -264,13 +264,13 @@ char* PropGet(char *field)
 	return propGet(Properties,field);
 }
 
-// retourne la valeur entière d'un champ
+// retourne la valeur entiï¿½re d'un champ
 int PropGetInt(char *field)
 {
 	return propGetInt(Properties,field);
 }
 
-// efface la valeur d'un champ s'il est présent, chaine
+// efface la valeur d'un champ s'il est prï¿½sent, chaine
 void PropSet(const char *field, const char *val)
 {
 	prop tmp = Properties;
