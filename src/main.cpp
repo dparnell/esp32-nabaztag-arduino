@@ -18,7 +18,7 @@ void simuSetMotor(int i,int val);
 #define PIXEL_PIN 4
 NeoPixelBus<NeoGrbFeature, NeoWs2813Method> strip(PIXELS, PIXEL_PIN);
 
-#define ADJUST_BRIGHTNESS(v) ((v) / 4)
+#define ADJUST_BRIGHTNESS(v) ((v) / 16)
 
 void simuSetLed(int i,int val) {
   RgbColor c(ADJUST_BRIGHTNESS((val>>16)&255), ADJUST_BRIGHTNESS((val>>8)&255), ADJUST_BRIGHTNESS((val)&255));
@@ -38,7 +38,7 @@ void setup() {
   strip.Begin();
   strip.Show();
 
-
+  simunetinit();
   loaderInit((char*)dumpbc);
 
   VPUSH(INTTOVAL(0));
