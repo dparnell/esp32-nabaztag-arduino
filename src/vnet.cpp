@@ -11,10 +11,14 @@
 #include <WiFi.h>
 
 int netState()
-{
-  switch(WiFi.status()) {
+{  
+  WiFi.getMode();
+  int status = WiFi.status();
+  // printf("netState: %d\n", status);
+
+  switch(status) {
     case WL_NO_SHIELD:
-      return 0;  // RT2501_S_BROKEN
+      return 1;  // RT2501_S_IDLE
     case WL_IDLE_STATUS:
       return 1; // RT2501_S_IDLE
     case WL_NO_SSID_AVAIL:
@@ -54,6 +58,9 @@ uint8_t mac[6];
 
 char* netMac()
 {
+  // make sure that the WiFi stuff is initialized first
+  WiFi.getMode();
+
   WiFi.macAddress(mac);
   return (char*)mac;
 }
