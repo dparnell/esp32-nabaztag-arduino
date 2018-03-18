@@ -96,7 +96,7 @@ int sysSave(char *dst,int i,int ldst,char *filename,int j,int len)
 #endif
 }
 
-static int firstTimeSet = 0;
+static char firstTimeSet = 0;
 static struct timeval firstTime;
 
 int sysTimems()
@@ -112,6 +112,7 @@ int sysTimems()
 		firstTimeSet = 1;
 		res = 0;
 	}
+
 	return res;
 }
 
@@ -442,12 +443,7 @@ int sysButton2()
 
 int sysButton3()
 {
-#ifdef VSIMU
-	return get_button3();
-#endif
-#ifdef VREAL
-	return 255-get_adc_value();
-#endif
+  return 255;
 }
 
 char* sysRfidget()
