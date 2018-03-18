@@ -24,7 +24,6 @@ int tcp_writeEventToNotify[TCPMAX]; // si 1, on a envoyé un write event qui n'a
 int udp_sock[UDPMAX];
 int udp_port[UDPMAX]; // port=0 -> disponible
 
-
 // déclarations
 int inet_addr_bin(char *ip);
 int simunetinit(void);
@@ -56,13 +55,11 @@ int inet_addr_bin(char *ip)
 	return *(int*)ip;
 }
 
-
 /**
 	 Initialiise les structures qui serviront à gérer les fonctions réseau
  */
 int simunetinit(void)
 {
-	;
 	memset(&tcp_sock, -1, sizeof(tcp_sock));
 	memset(&tcp_enable, 0, sizeof(tcp_enable));
 	memset(&tcp_listen, 0, sizeof(tcp_listen));
