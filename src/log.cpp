@@ -46,13 +46,13 @@ static const char *get_prefix(e_logtypes t)
 	case LOG_VM:
 		res = "vm"; break;
 	case LOG_SIMUNET:
-		res = "simunet"; break;
+		res = "net"; break;
 	case LOG_SIMUAUDIO:
-		res = "simuaudio"; break;
+		res = "audio"; break;
 	case LOG_SIMULEDS:
-		res = "simuleds"; break;
+		res = "leds"; break;
 	case LOG_SIMUMOTORS:
-		res = "simumotors"; break;
+		res = "motors"; break;
 	}
 	return res;
 }
