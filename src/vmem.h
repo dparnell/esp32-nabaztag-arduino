@@ -9,7 +9,7 @@
 
 // taille en mots 32 bits (128kwords -> 512ko)
 //#define VMEM_LENGTH	(1024*200)
-#define VMEM_LENGTH	(1024*15)
+#define VMEM_LENGTH	(1024*16)
 #define VMEM_GCTHRESHOLD 16
 
 extern int vmem_heap[VMEM_LENGTH];
