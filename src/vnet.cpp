@@ -11,14 +11,16 @@
 #include <WiFi.h>
 
 int netState()
-{  
-  WiFi.getMode();
+{
+  if(WiFi.getMode() == WIFI_MODE_AP) {
+    return 5; // RT2501_S_MASTER
+  }
   int status = WiFi.status();
   // printf("netState: %d\n", status);
 
   switch(status) {
     case WL_NO_SHIELD:
-      return 1;  // RT2501_S_IDLE
+      return 1; // RT2501_S_BROKEN
     case WL_IDLE_STATUS:
       return 1; // RT2501_S_IDLE
     case WL_NO_SSID_AVAIL:
